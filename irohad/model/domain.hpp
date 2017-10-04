@@ -36,7 +36,7 @@ namespace iroha {
       /**
        * Default role for users in this domain
        */
-       std::string default_role;
+      std::string default_role;
     };
   }
 }

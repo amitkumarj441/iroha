@@ -76,7 +76,7 @@ namespace iroha_cli {
     log_->info("[Account]:");
     log_->info("-Id:- {}", account.account_id());
     // TODO : print permissions
-    log_->info("-Domain- {}", account.domain_name());
+    log_->info("-Domain- {}", account.domain_id());
   }
 
   void QueryResponseHandler::handleAccountAssetsResponse(
