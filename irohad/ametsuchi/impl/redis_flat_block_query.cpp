@@ -28,7 +28,7 @@ namespace iroha {
         const std::string &account_id) {
       std::vector<uint64_t> block_ids;
       client_.lrange(
-          account_id, 0, -1, [this, &block_ids](cpp_redis::reply &reply) {
+          account_id, 0, -1, [&block_ids](cpp_redis::reply &reply) {
             for (const auto &block_reply : reply.as_array()) {
               const auto &string_reply = block_reply.as_string();
 

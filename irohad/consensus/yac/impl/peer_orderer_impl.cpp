@@ -36,7 +36,6 @@ namespace iroha {
         // todo implement effective ordering based on hash value
         return getInitialOrdering();
       }
-
     }  // namespace yac
   }    // namespace consensus
 }  // namespace iroha
