@@ -33,6 +33,10 @@ int main(int argc, char *argv[]) {
   auto log = logger::log("MAIN");
 
   try {
+#ifndef IROHA_VERSION
+#define IROHA_VERSION "v0.95"
+#endif
+
 #ifdef IROHA_VERSION
 // preprocessor trick, which helps to stringify arbitrary value
 #define STRINGIFY2(X) #X
@@ -71,7 +75,8 @@ int main(int argc, char *argv[]) {
       iroha::main::BlockInserter inserter(irohad.storage);
 
       // throws if can not open file
-      auto content = read_file(irohad.config().blockchainOptions().genesis_block);
+      auto content =
+          read_file(irohad.config().blockchainOptions().genesis_block);
       auto block = inserter.parseBlock(content);
       log->info("Block parsed");
 

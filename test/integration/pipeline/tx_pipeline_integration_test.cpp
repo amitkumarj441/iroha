@@ -44,9 +44,8 @@ class TestIrohad : public Service {
   void run() override {
     grpc::ServerBuilder builder;
     int *port = nullptr;
-    builder.AddListeningPort(peer.address,
-                             grpc::InsecureServerCredentials(),
-                             port);
+    builder.AddListeningPort(
+        peer.address, grpc::InsecureServerCredentials(), port);
     BOOST_ASSERT_MSG(port != nullptr, "can not start the service");
 
     builder.RegisterService(ordering_init.ordering_gate_transport.get());
@@ -162,14 +161,11 @@ TEST_F(TxPipelineIntegrationTest, TxPipelineTest) {
       iroha::model::generators::TransactionGenerator().generateTransaction(
           "admin@test", 1, {cmd});
 
-    // TODO(@warchant): refactor with Keypair object
+  // TODO(@warchant): refactor with Keypair object
   iroha::keypair_t client_keypair =
       iroha::create_keypair(iroha::create_seed("zupa zecred passwort"));
   iroha::model::ModelCryptoProviderImpl provider(client_keypair);
   provider.sign(tx);
-
-  tx.signatures.push_back(
-      iroha::model::Signature{signature, client_keypair.pubkey});
 
   sendTransactions({tx});
 
