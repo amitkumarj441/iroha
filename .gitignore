@@ -30,3 +30,5 @@ include/generated/*
 iroha.conf
 peers.list
 
+cmake-build*
+.gtm
