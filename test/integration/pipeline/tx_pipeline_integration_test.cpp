@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 
+#include "crypto/crypto.hpp"
 #include "crypto/hash.hpp"
 #include "crypto/keys_manager_impl.hpp"
 #include "datetime/time.hpp"
@@ -42,9 +43,12 @@ class TestIrohad : public Service {
 
   void run() override {
     grpc::ServerBuilder builder;
-    int port = 0;
-    builder.AddListeningPort(
-        peer.address, grpc::InsecureServerCredentials(), &port);
+    int *port = nullptr;
+    builder.AddListeningPort(peer.address,
+                             grpc::InsecureServerCredentials(),
+                             port);
+    BOOST_ASSERT_MSG(port != nullptr, "can not start the service");
+
     builder.RegisterService(ordering_init.ordering_gate_transport.get());
     builder.RegisterService(ordering_init.ordering_service_transport.get());
     builder.RegisterService(yac_init.consensus_network.get());
@@ -107,7 +111,7 @@ class TxPipelineIntegrationTest : public iroha::ametsuchi::AmetsuchiTest {
     auto proposal_wrapper = make_test_subscriber<CallExact>(
         irohad->getPeerCommunicationService()->on_proposal(), 1);
     proposal_wrapper.subscribe(
-        [this](auto proposal) { proposals.push_back(proposal); });
+        [this](auto &&proposal) { proposals.push_back(std::move(proposal)); });
 
     // verify commit and block
     auto commit_wrapper = make_test_subscriber<CallExact>(
@@ -158,11 +162,14 @@ TEST_F(TxPipelineIntegrationTest, TxPipelineTest) {
       iroha::model::generators::TransactionGenerator().generateTransaction(
           "admin@test", 1, {cmd});
 
-  //  TODO(@warchant): change to load from config
-  iroha::KeysManagerImpl manager("admin@test");
-  auto keypair = manager.loadKeys().value();
-  iroha::model::ModelCryptoProviderImpl provider(keypair);
+    // TODO(@warchant): refactor with Keypair object
+  iroha::keypair_t client_keypair =
+      iroha::create_keypair(iroha::create_seed("zupa zecred passwort"));
+  iroha::model::ModelCryptoProviderImpl provider(client_keypair);
   provider.sign(tx);
+
+  tx.signatures.push_back(
+      iroha::model::Signature{signature, client_keypair.pubkey});
 
   sendTransactions({tx});
 

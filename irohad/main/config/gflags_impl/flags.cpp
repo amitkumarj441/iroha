@@ -129,4 +129,13 @@ DEFINE_validator(key, &filepath_validator);
 DEFINE_string(dbpath, "", "Define path to folder for block storage");
 DEFINE_validator(dbpath, &non_empty_validator);
 
+/// Torii
+// host
+DEFINE_string(torii_host, "0.0.0.0", "Define host for iroha to listen on");
+DEFINE_validator(torii_host, &host_validator);
+
+// port
+DEFINE_int32(torii_port, 50051, "Define port for iroha to listen on");
+DEFINE_validator(torii_port, &port_validator);
+
 #endif  //  IROHA_FLAGS_IMPL_HPP_

@@ -95,6 +95,7 @@ void Service::initPeer() {
 
   if (it == peers.end()) {
     log_->error("Cannot find peer with given public key");
+    BOOST_ASSERT_MSG(false, "there is no peer with given pubkey");
   }
 
   peer = *it;

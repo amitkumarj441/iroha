@@ -32,34 +32,26 @@ DECLARE_bool(create);
 DECLARE_string(genesis_block);
 
 /// Redis
-// redis host
 DECLARE_string(redis_host);
-
-// redis port
 DECLARE_int32(redis_port);
 
 /// PostgreSQL host and port, username and password
-// postgres host
 DECLARE_string(postgres_host);
-
-// postgres port
 DECLARE_int32(postgres_port);
-
-// postgres username
 DECLARE_string(postgres_username);
 
 // postgres password
 DECLARE_string(postgres_password);
 
 /// Keypair
-// certificate
 DECLARE_string(certificate);
-
-// key
 DECLARE_string(key);
 
 /// BlockStorage
-// path
 DECLARE_string(dbpath);
+
+/// Torii
+DECLARE_string(torii_host);
+DECLARE_int32(torii_port);
 
 #endif  //  IROHA_FLAGS_HPP_

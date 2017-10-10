@@ -20,28 +20,33 @@
 
 #include <gmock/gmock.h>
 #include "main/config/config.hpp"
+#include "util/string.hpp"
+
+using namespace std::literals::string_literals;
+
+template <typename T>
+T parseEnv(const char *name, T default_) {
+  auto v = std::getenv(name);
+  return v ? iroha::string::util::from_string<T>(v) : default_;
+}
 
 class FakeConfig : public iroha::config::Config {
  public:
   FakeConfig() { load(); }
 
   void load() override {
-    auto pg_host = std::getenv("IROHA_POSTGRES_HOST");
-    auto pg_port = std::getenv("IROHA_POSTGRES_PORT");
-    auto pg_user = std::getenv("IROHA_POSTGRES_USER");
-    auto pg_pass = std::getenv("IROHA_POSTGRES_PASSWORD");
-    auto rd_host = std::getenv("IROHA_REDIS_HOST");
-    auto rd_port = std::getenv("IROHA_REDIS_PORT");
-
-    if (!pg_host) {
-      return;
-    }
+    auto pg_host = parseEnv("IROHA_POSTGRES_HOST", "172.17.0.2"s);
+    auto pg_port = parseEnv("IROHA_POSTGRES_PORT", 5432);
+    auto pg_user = parseEnv("IROHA_POSTGRES_USER", "iroha"s);
+    auto pg_pass = parseEnv("IROHA_POSTGRES_PASSWORD", "helloworld"s);
+    auto rd_host = parseEnv("IROHA_REDIS_HOST", "172.17.0.3"s);
+    auto rd_port = parseEnv("IROHA_REDIS_PORT", 6379);
 
     this->redis_.host = rd_host;
-    this->redis_.port = static_cast<uint16_t>(std::stoull(rd_port));
+    this->redis_.port = static_cast<uint16_t>(rd_port);
 
     this->pg_.host = pg_host;
-    this->pg_.port = static_cast<uint16_t>(std::stoull(pg_port));
+    this->pg_.port = static_cast<uint16_t>(pg_port);
     this->pg_.username = pg_user;
     this->pg_.password = pg_pass;
 
