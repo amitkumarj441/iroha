@@ -17,9 +17,12 @@
 
 #include "gflags_config.hpp"
 #include "main/config/flags.hpp"
+#include "util/filesystem.hpp"
 
 namespace iroha {
   namespace config {
+
+    using iroha::filesystem::util::read_file;
 
     GFlagsConfig::GFlagsConfig() { load(); }
 
@@ -35,12 +38,13 @@ namespace iroha {
       this->pg_.username = FLAGS_postgres_username;
       this->pg_.password = FLAGS_postgres_password;
 
-      this->crypto_.certificate = FLAGS_certificate;
-      this->crypto_.key = FLAGS_key;
+      this->crypto_.certificate = read_file(FLAGS_certificate);
+      this->crypto_.key = read_file(FLAGS_key);
 
       this->db_.path = FLAGS_dbpath;
 
-      this->options_.genesis_block = FLAGS_genesis_block;
+      this->options_.genesis_block =
+          filesystem::util::read_file(FLAGS_genesis_block);
 
       this->loaded_ = true;
     }

@@ -67,8 +67,8 @@ void Service::init() {
 }
 
 void Service::initStorage() {
-  storage = StorageImpl::create(config_->redis(), config_->postgres(),
-                                config_->blockStorage());
+  storage = StorageImpl::create(
+      config_->redis(), config_->postgres(), config_->blockStorage());
 
   BOOST_ASSERT(storage != nullptr);
 
@@ -88,8 +88,9 @@ void Service::initProtoFactories() {
 void Service::initPeer() {
   auto peers = wsv->getLedgerPeers().value();
 
-  auto it = std::find_if(peers.begin(), peers.end(), [this](auto peer) {
-    return peer.pubkey == keypair.pubkey;
+  auto it = std::find_if(peers.begin(), peers.end(), [this](auto &&peer) {
+    auto &&kp = config_->cryptography().keypair();
+    return peer.pubkey == kp.pubkey;
   });
 
   if (it == peers.end()) {
@@ -102,7 +103,8 @@ void Service::initPeer() {
 }
 
 void Service::initCryptoProvider() {
-  crypto_verifier = std::make_shared<ModelCryptoProviderImpl>(keypair);
+  crypto_verifier = std::make_shared<ModelCryptoProviderImpl>(
+      config_->cryptography().keypair());
 
   log_->info("[Init] => crypto provider");
 }
@@ -123,11 +125,6 @@ void Service::initPeerQuery() {
   log_->info("[Init] => peer query");
 }
 
-void Service::initPeerOrderer() {
-  orderer = std::make_shared<PeerOrdererImpl>(wsv);
-  log_->info("[Init] => peer orderer");
-}
-
 void Service::initOrderingGate() {
   // maximum transactions in proposal
   const auto max_transactions_in_proposal = 10u;
@@ -135,9 +132,8 @@ void Service::initOrderingGate() {
   // delay before emitting new proposal
   const auto delay_for_new_proposal = 5000u;
 
-  ordering_gate = ordering_init.initOrderingGate(wsv,
-                                                 max_transactions_in_proposal,
-                                                 delay_for_new_proposal);
+  ordering_gate = ordering_init.initOrderingGate(
+      wsv, max_transactions_in_proposal, delay_for_new_proposal);
 
   log_->info("[Init] => init ordering gate - [{}]",
              logger::logBool(ordering_gate));
@@ -154,18 +150,20 @@ void Service::initSimulator() {
 }
 
 void Service::initBlockLoader() {
-  block_loader = loader_init.initBlockLoader(wsv,
-                                             storage->getBlockQuery(),
-                                             crypto_verifier);
+  block_loader = loader_init.initBlockLoader(
+      wsv, storage->getBlockQuery(), crypto_verifier);
 
   log_->info("[Init] => block loader");
 }
 
 void Service::initConsensusGate() {
-  consensus_gate = yac_init.initConsensusGate(peer.address,
-                                              orderer,
-                                              simulator,
-                                              block_loader);
+  consensus_gate = yac_init.initConsensusGate(
+      peer.address,
+      wsv,
+      simulator,
+      block_loader,
+      /*TODO(@warchant): temp solution. Will be changed with Keypair object.*/
+      config_->cryptography().keypair());
 
   log_->info("[Init] => consensus gate");
 }
@@ -220,7 +218,8 @@ void Service::run() {
   grpc::ServerBuilder builder;
   int *port = 0;
   builder.AddListeningPort(config_->torii().listenAddress(),
-                           grpc::InsecureServerCredentials(), port);
+                           grpc::InsecureServerCredentials(),
+                           port);
   BOOST_ASSERT(port != nullptr);
 
   builder.RegisterService(ordering_init.ordering_gate_transport.get());

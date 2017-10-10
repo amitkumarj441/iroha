@@ -18,7 +18,7 @@ limitations under the License.
 
 #include <gflags/gflags.h>
 #include <gflags/gflags_completions.h>
-#include "main/config/impl/gflags_config.hpp"
+#include "main/config/gflags_impl/gflags_config.hpp"
 #include "main/raw_block_insertion.hpp"
 #include "main/service.hpp"
 
@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) {
       iroha::main::BlockInserter inserter(irohad.storage);
 
       // throws if can not open file
-      auto content = read_file(irohad.config().options().genesis_block);
+      auto content = read_file(irohad.config().blockchainOptions().genesis_block);
       auto block = inserter.parseBlock(content);
       log->info("Block parsed");
 

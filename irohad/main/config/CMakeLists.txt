@@ -1,5 +1,5 @@
 add_library(irohad-flags
-    impl/flags.cpp
+    gflags_impl/flags.cpp
     flags.hpp
     )
 target_link_libraries(irohad-flags
@@ -8,8 +8,8 @@ target_link_libraries(irohad-flags
     )
 
 add_library(irohad-config
-    impl/gflags_config.hpp
-    impl/gflags_config.cpp
+    gflags_impl/gflags_config.hpp
+    gflags_impl/gflags_config.cpp
     config.hpp
     )
 target_link_libraries(irohad-config

@@ -42,8 +42,22 @@ namespace iroha {
   using BadFormatException = std::invalid_argument;
   using byte_t = uint8_t;
 
-  static const std::string code = {'0', '1', '2', '3', '4', '5', '6', '7',
-                                   '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+  static const std::string code = {'0',
+                                   '1',
+                                   '2',
+                                   '3',
+                                   '4',
+                                   '5',
+                                   '6',
+                                   '7',
+                                   '8',
+                                   '9',
+                                   'a',
+                                   'b',
+                                   'c',
+                                   'd',
+                                   'e',
+                                   'f'};
 
   /**
    * Base type which represents blob of fixed size.
@@ -56,7 +70,6 @@ namespace iroha {
   template <size_t size_>
   class blob_t : public std::array<byte_t, size_> {
    public:
-
     /**
      * Initialize blob value
      */
@@ -325,6 +338,13 @@ namespace iroha {
   template <typename Base, typename T>
   inline bool instanceof (const T &ptr) {
     return typeid(Base) == typeid(ptr);
+  }
+
+  inline keypair_t make_keypair(std::string pubkey, std::string privkey) {
+    keypair_t kp;
+    kp.pubkey = pubkey_t::from_string(pubkey);
+    kp.privkey = privkey_t::from_string(privkey);
+    return kp;
   }
 
 }  // namespace iroha

@@ -19,7 +19,7 @@
 #define IROHA_APPLICATION_HPP
 
 #include "ametsuchi/impl/storage_impl.hpp"
-#include "main/config/impl/gflags_config.hpp"
+#include "main/config/gflags_impl/gflags_config.hpp"
 #include "crypto/crypto.hpp"
 #include "logger/logger.hpp"
 #include "main/impl/block_loader_init.hpp"

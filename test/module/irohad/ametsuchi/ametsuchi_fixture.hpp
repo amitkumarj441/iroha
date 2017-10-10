@@ -20,7 +20,7 @@
 
 #include "common/files.hpp"
 #include "logger/logger.hpp"
-#include "main/config/impl/gflags_config.hpp"
+#include "main/config/gflags_impl/gflags_config.hpp"
 
 #include <gtest/gtest.h>
 #include <cpp_redis/cpp_redis>

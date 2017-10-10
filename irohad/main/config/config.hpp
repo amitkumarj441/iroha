@@ -18,8 +18,9 @@
 #ifndef IROHA_CONFIG_HPP_
 #define IROHA_CONFIG_HPP_
 
-#include <string>
 #include <sstream>
+#include <string>
+#include "common/types.hpp"
 
 namespace iroha {
   namespace config {
@@ -62,8 +63,11 @@ namespace iroha {
        * @brief Everything that is required for cryptography is here.
        */
       struct Cryptography {
-        std::string certificate;  ///< path to the certificate
-        std::string key;          ///< path to the private key
+        std::string certificate;  ///< content of the certificate
+        std::string key;          ///< content of the private key
+
+        // TODO(@warchant): temporary solution. Refactor with Keypair object.
+        keypair_t keypair() const noexcept;
       };
 
       /**
@@ -81,9 +85,7 @@ namespace iroha {
          * host:port
          * @return
          */
-        std::string listenAddress() const noexcept {
-          return this->host + ":" + std::to_string(this->port);
-        }
+        std::string listenAddress() const noexcept;
       };
 
       /**
@@ -96,15 +98,7 @@ namespace iroha {
          * host=localhost port=$port user=$user password=$pwd
          * @return
          */
-        std::string options() const noexcept {
-          std::stringstream ss;
-
-          // host=localhost port=$port user=$user password=$pwd
-          ss << "host=" << this->host << " port=" << this->port
-             << " user=" << this->username << " password=" << this->password;
-
-          return ss.str();
-        }
+        std::string options() const noexcept;
       };
 
       /**
@@ -127,11 +121,12 @@ namespace iroha {
        * Derived classes define a load strategy.
        *
        * When config is loaded, this->loaded_ should be setted to true.
+       * Clients should verify that config is loaded.
        */
       virtual void load() = 0;
 
       /// accessor for blockchain options
-      inline const BlockchainOptions &options() const noexcept;
+      inline const BlockchainOptions &blockchainOptions() const noexcept;
 
       /// accessor for redis options
       inline const Redis &redis() const noexcept;
@@ -181,10 +176,29 @@ namespace iroha {
     inline const Config::BlockStorage &Config::blockStorage() const noexcept {
       return db_;
     }
-    inline const Config::BlockchainOptions &Config::options() const noexcept {
+    inline const Config::BlockchainOptions &Config::blockchainOptions() const
+        noexcept {
       return options_;
     }
     inline bool Config::loaded() const noexcept { return loaded_; }
+
+    inline std::string Config::Postgres::options() const noexcept {
+      std::stringstream ss;
+
+      // host=localhost port=$port user=$user password=$pwd
+      ss << "host=" << this->host << " port=" << this->port
+         << " user=" << this->username << " password=" << this->password;
+
+      return ss.str();
+    }
+
+    inline std::string Config::Torii::listenAddress() const noexcept {
+      return this->host + ":" + std::to_string(this->port);
+    }
+
+    inline keypair_t Config::Cryptography::keypair() const noexcept {
+      return make_keypair(certificate, key);
+    }
   }
 }
 
