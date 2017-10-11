@@ -17,7 +17,7 @@
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 
-add_library(server_runner server_runner.cpp)
+addlibrary(server_runner server_runner.cpp)
 target_link_libraries(server_runner
     torii_service
     logger
@@ -25,12 +25,12 @@ target_link_libraries(server_runner
     schema
     )
 
-add_library(raw_block_insertion impl/raw_block_insertion.cpp)
+addlibrary(raw_block_insertion impl/raw_block_insertion.cpp)
 target_link_libraries(raw_block_insertion
     json_model_converters
     )
 
-add_library(application
+addlibrary(application
     application.cpp
     impl/ordering_init.cpp
     impl/consensus_init.cpp
@@ -55,7 +55,7 @@ target_link_libraries(application
     block_loader_service
     )
 
-add_executable(irohad irohad.cpp)
+addexecutable(irohad irohad.cpp)
 target_link_libraries(irohad
     application
     raw_block_insertion

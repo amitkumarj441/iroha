@@ -1,5 +1,5 @@
 
-add_library(stateful_validator
+addlibrary(stateful_validator
     impl/stateful_validator_impl.cpp
     )
 target_link_libraries(stateful_validator
@@ -10,7 +10,7 @@ target_link_libraries(stateful_validator
     logger
     )
 
-add_library(stateless_validator
+addlibrary(stateless_validator
     impl/stateless_validator_impl.cpp
     )
 target_link_libraries(stateless_validator
@@ -18,7 +18,7 @@ target_link_libraries(stateless_validator
     logger
     )
 
-add_library(chain_validator
+addlibrary(chain_validator
     impl/chain_validator_impl.cpp)
 target_link_libraries(chain_validator
     optional

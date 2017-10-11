@@ -20,14 +20,14 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 add_subdirectory(interactive)
 
 # Gflags config validators
-add_library(cli-flags_validators
+addlibrary(cli-flags_validators
     validators.cpp
     )
 target_link_libraries(cli-flags_validators
     gflags
     )
 
-add_library(client
+addlibrary(client
     client.cpp
     impl/query_response_handler.cpp
     impl/transaction_response_handler.cpp
@@ -53,7 +53,7 @@ target_include_directories(client PUBLIC
     )
 
 # IrohaCli
-add_executable(iroha-cli
+addexecutable(iroha-cli
     main.cpp
     validators.cpp
     )

@@ -1,4 +1,4 @@
-add_library(networking
+addlibrary(networking
     impl/peer_communication_service_impl.cpp
     )
 
@@ -10,7 +10,7 @@ target_link_libraries(networking
     logger
     )
 
-add_library(block_loader
+addlibrary(block_loader
     impl/block_loader_impl.cpp
     )
 
@@ -21,7 +21,7 @@ target_link_libraries(block_loader
     model
     )
 
-add_library(block_loader_service
+addlibrary(block_loader_service
     impl/block_loader_service.cpp
     )
 target_link_libraries(block_loader_service

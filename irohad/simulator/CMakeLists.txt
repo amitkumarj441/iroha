@@ -1,4 +1,4 @@
-add_library(simulator
+addlibrary(simulator
     impl/simulator.cpp
     )
 

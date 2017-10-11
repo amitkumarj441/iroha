@@ -1,4 +1,4 @@
-add_library(ametsuchi
+addlibrary(ametsuchi
     impl/flat_file/flat_file.cpp
 
     impl/storage_impl.cpp

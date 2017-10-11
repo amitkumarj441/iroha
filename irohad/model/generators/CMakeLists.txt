@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 
-add_library(model_generators
+addlibrary(model_generators
     impl/signature_generator.cpp
     impl/block_generator.cpp
     impl/transaction_generator.cpp

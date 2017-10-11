@@ -1,7 +1,7 @@
 add_subdirectory(generators)
 add_subdirectory(converters)
 
-add_library(model
+addlibrary(model
     model_crypto_provider_impl.cpp
     impl/model_operators.cpp
     impl/query_execution.cpp
@@ -18,7 +18,7 @@ target_link_libraries(model
     )
 
 
-add_library(model_registrations INTERFACE)
+addlibrary(model_registrations INTERFACE)
 target_include_directories(model_registrations INTERFACE
     registration
     )
@@ -26,7 +26,7 @@ target_link_libraries(model_registrations INTERFACE
     model
     )
 
-add_library(command_execution
+addlibrary(command_execution
     execution/impl/command_executor.cpp
     execution/impl/command_executor_factory.cpp
     )

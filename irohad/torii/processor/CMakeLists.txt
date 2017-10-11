@@ -1,4 +1,4 @@
-add_library(processors
+addlibrary(processors
     impl/transaction_processor_impl.cpp
     impl/query_processor_impl.cpp
     )

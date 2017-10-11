@@ -1,4 +1,4 @@
-add_library(synchronizer
+addlibrary(synchronizer
     impl/synchronizer_impl.cpp
     )
 

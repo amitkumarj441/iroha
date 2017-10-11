@@ -1,1 +1,1 @@
-add_library(timer STATIC timer.cpp)
+addlibrary(timer STATIC timer.cpp)

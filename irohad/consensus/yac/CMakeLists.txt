@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 
-add_library(yac
+addlibrary(yac
     impl/yac.cpp
     impl/cluster_order.cpp
     impl/timer_impl.cpp

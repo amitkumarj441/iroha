@@ -1,4 +1,4 @@
-add_library(ed25519 SHARED
+addlibrary(ed25519 SHARED
     add_scalar.c
     fe.c
     ge.c

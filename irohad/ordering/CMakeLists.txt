@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-add_library(ordering_service
+addlibrary(ordering_service
     impl/ordering_gate_impl.cpp
     impl/ordering_service_impl.cpp
     impl/ordering_gate_transport_grpc.cpp

@@ -16,7 +16,7 @@
 #
 
 # Interactive Client
-add_library(interactive_cli
+addlibrary(interactive_cli
     impl/interactive_cli.cpp
     impl/interactive_common_cli.cpp
     impl/interactive_query_cli.cpp

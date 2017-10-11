@@ -20,7 +20,7 @@ target_link_libraries(test_subscriber_testing
     rxcpp
     )
 
-add_library(test_block_generator test_block_generator.cpp)
+addlibrary(test_block_generator test_block_generator.cpp)
 target_link_libraries(test_block_generator
     model
     )

@@ -1,9 +1,9 @@
-add_library(iroha_amount
-        amount.cpp
-        )
+addlibrary(iroha_amount
+    amount.cpp
+    )
 
 target_link_libraries(
-        iroha_amount
-        optional
-        logger
-)
+    iroha_amount
+    optional
+    logger
+    )
