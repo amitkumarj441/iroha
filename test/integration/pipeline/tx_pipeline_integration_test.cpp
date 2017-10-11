@@ -31,9 +31,9 @@
 using namespace framework::test_subscriber;
 using namespace std::chrono_literals;
 
-class TestIrohad : public Service {
+class TestIrohad : public Application {
  public:
-  TestIrohad(std::unique_ptr<Config> config) : Service(std::move(config)) {}
+  TestIrohad(std::unique_ptr<Config> config) : Application(std::move(config)) {}
 
   auto &getCommandService() { return command_service; }
 

@@ -49,9 +49,9 @@
 
 using iroha::config::Config;
 
-class Service {
+class Application {
  public:
-  explicit Service(std::unique_ptr<Config>);
+  explicit Application(std::unique_ptr<Config>);
 
   const Config &config() const;
 
@@ -65,7 +65,7 @@ class Service {
    */
   virtual void run();
 
-  ~Service();
+  ~Application();
 
  protected:
   const std::unique_ptr<Config> config_;

@@ -26,7 +26,7 @@ limitations under the License.
 
 using iroha::config::Config;
 using iroha::config::GFlagsConfig;
-using Iroha = Service;
+using Iroha = Application;
 using iroha::filesystem::util::read_file;
 
 int main(int argc, char *argv[]) {
