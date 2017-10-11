@@ -23,15 +23,28 @@ endfunction()
 function(addtest test_name SOURCES)
   if (COVERAGE)
     set(test_xml_output --gtest_output=xml:${REPORT_DIR}/xunit-${test_name}.xml)
+    if (VALGRIND_BIN)
+      set(valgrind_xml_output ${VALGRIND_BIN}
+          --xml=yes
+          --xml-file=${REPORT_DIR}/valgrind-${test_name}.xml
+          --leak-check=full
+          --demangle=yes)
+    endif ()
   endif ()
   add_executable(${test_name} ${SOURCES})
   target_link_libraries(${test_name} gtest gmock)
   target_include_directories(${test_name} PUBLIC ${PROJECT_SOURCE_DIR}/test)
   add_test(
       NAME ${test_name}
-      COMMAND $<TARGET_FILE:${test_name}> ${test_xml_output}
+      COMMAND ${valgrind_xml_output} $<TARGET_FILE:${test_name}> ${test_xml_output}
   )
   strictmode(${test_name})
+  # gtest does not use override specifier on mocks
+  if ((CMAKE_CXX_COMPILER_ID STREQUAL "GNU") OR
+  (CMAKE_CXX_COMPILER_ID STREQUAL "Clang") OR
+  (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang"))
+    target_compile_options(${test_name} PRIVATE -Wno-inconsistent-missing-override)
+  endif()
 endfunction()
 
 # Creates benchmark "bench_name", with "SOURCES" (use string as second argument)

@@ -36,11 +36,6 @@ if(NOT GCOVR_BIN)
   find_program(GCOVR_BIN gcovr)
 endif()
 
-if(NOT REPORT_DIR)
-  set(REPORT_DIR "${CMAKE_BINARY_DIR}")
-  message(STATUS "REPORT_DIR default is ${REPORT_DIR}")
-endif()
-
 if(NOT GCOVR_BIN)
   message(WARNING "gcovr can not be found in PATH. Target gcovr is not available.")
 else()
@@ -51,4 +46,14 @@ else()
       -e '${CMAKE_BINARY_DIR}/*' -o ${REPORT_DIR}/gcovr.xml
     COMMENT "Collecting coverage data with gcovr"
     )
+endif()
+
+if(NOT VALGRIND_BIN)
+  find_program(VALGRIND_BIN valgrind)
+endif()
+
+if(NOT VALGRIND_BIN)
+  message(WARNING "valgrind can not be found in PATH. valgrind is not available.")
+else()
+  message(STATUS "valgrind enabled")
 endif()
