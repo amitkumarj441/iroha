@@ -76,10 +76,15 @@ class OrderingServiceTest : public ::testing::Test {
     if (loop_thread.joinable()) loop_thread.join();
   }
 
-  ~OrderingServiceTest() = default;
+// <<<<<<< HEAD
+  // ~OrderingServiceTest() = default;
 
   std::thread loop_thread;
   std::shared_ptr<MockOrderingServiceTransport> fake_transport;
+// =======
+  // ordering::MockOrderingGate *fake_gate;
+  // std::unique_ptr<iroha::ordering::proto::OrderingService::Stub> client;
+// >>>>>>> 945fda18... Remove sleep from OG test; remove shutdown override in OS test
   std::condition_variable cv;
   std::mutex m;
   std::string address{"0.0.0.0:50051"};
