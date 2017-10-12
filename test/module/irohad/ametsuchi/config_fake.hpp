@@ -24,11 +24,12 @@
 #include "crypto/crypto.hpp"
 
 using namespace std::literals::string_literals;
+using iroha::string::util::from_string;
 
 template <typename T>
 T parseEnv(const char *name, T default_) {
   auto v = std::getenv(name);
-  return v ? iroha::string::util::from_string<T>(v) : default_;
+  return v && strlen(v) > 0 ? from_string<T>(v) : default_;
 }
 
 class FakeConfig : public iroha::config::Config {
