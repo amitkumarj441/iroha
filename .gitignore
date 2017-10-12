@@ -32,3 +32,4 @@ peers.list
 
 cmake-build*
 .gtm
+/.gtm/
