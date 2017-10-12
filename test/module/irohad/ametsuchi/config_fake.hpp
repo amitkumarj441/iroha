@@ -21,6 +21,7 @@
 #include <gmock/gmock.h>
 #include "main/config/config.hpp"
 #include "util/string.hpp"
+#include "crypto/crypto.hpp"
 
 using namespace std::literals::string_literals;
 
@@ -35,22 +36,26 @@ class FakeConfig : public iroha::config::Config {
   FakeConfig() { load(); }
 
   void load() override {
-    auto pg_host = parseEnv("IROHA_POSTGRES_HOST", "172.17.0.2"s);
-    auto pg_port = parseEnv("IROHA_POSTGRES_PORT", 5432);
-    auto pg_user = parseEnv("IROHA_POSTGRES_USER", "iroha"s);
-    auto pg_pass = parseEnv("IROHA_POSTGRES_PASSWORD", "helloworld"s);
-    auto rd_host = parseEnv("IROHA_REDIS_HOST", "172.17.0.3"s);
-    auto rd_port = parseEnv("IROHA_REDIS_PORT", 6379);
+    this->pg_.host = parseEnv("IROHA_POSTGRES_HOST", "172.17.0.2"s);
+    this->pg_.port = parseEnv("IROHA_POSTGRES_PORT", 5432);
+    this->pg_.username = parseEnv("IROHA_POSTGRES_USER", "iroha"s);
+    this->pg_.password = parseEnv("IROHA_POSTGRES_PASSWORD", "helloworld"s);
 
-    this->redis_.host = rd_host;
-    this->redis_.port = static_cast<uint16_t>(rd_port);
+    this->redis_.host = parseEnv("IROHA_REDIS_HOST", "172.17.0.3"s);
+    this->redis_.port = parseEnv("IROHA_REDIS_PORT", 6379);
 
-    this->pg_.host = pg_host;
-    this->pg_.port = static_cast<uint16_t>(pg_port);
-    this->pg_.username = pg_user;
-    this->pg_.password = pg_pass;
+    this->db_.path = parseEnv("IROHA_DATABASE_PATH", "/tmp/block_store"s);
 
-    this->db_.path = "/tmp/block_store";
+    this->torii_.host = parseEnv("IROHA_TORII_HOST", "0.0.0.0"s);
+    this->torii_.port = parseEnv("IROHA_TORII_PORT", 50051);
+
+    iroha::keypair_t kp = iroha::create_keypair(iroha::create_seed("host"));
+    this->crypto_.key = kp.privkey.to_string();
+    this->crypto_.certificate = kp.pubkey.to_string();
+
+//    this->options_.genesis_block = ?;
+
+    this->loaded_ = true;
   }
 };
 
